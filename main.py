@@ -12,7 +12,7 @@ app = Flask(__name__)
 
 # Cek dan download model jika belum ada
 MODEL_PATH = 'psoriasis_model.h5'
-MODEL_URL = 'https://drive.google.com/file/d/1ToVYnRTAjOgV9mZG1E_x6VHD7rnpDULL/view?usp=sharing'  # <--- Ganti ini!
+MODEL_URL = 'https://drive.google.com/uc?export=download&id=1ToVYnRTAjOgV9mZG1E_x6VHD7rnpDULL'
 
 def download_model():
     if not os.path.exists(MODEL_PATH):
