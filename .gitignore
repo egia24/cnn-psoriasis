@@ -1,5 +1,5 @@
 venv/ 
 __pychace__/
-psoriasis__model.h5
+*.h5
 *.pyd
 *.dll

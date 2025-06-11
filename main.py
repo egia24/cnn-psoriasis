@@ -5,13 +5,34 @@ from tensorflow.keras.preprocessing.image import img_to_array
 from PIL import Image
 import numpy as np
 import io
+import os
+import requests
 
 app = Flask(__name__)
 
-# Load the CNN model once when the app starts
-model = load_model('psoriasis_model.h5', compile=False)
+# Cek dan download model jika belum ada
+MODEL_PATH = 'psoriasis_model.h5'
+MODEL_URL = 'https://drive.google.com/file/d/1ToVYnRTAjOgV9mZG1E_x6VHD7rnpDULL/view?usp=sharing'  # <--- Ganti ini!
 
-# Define the class labels according to the model's output
+def download_model():
+    if not os.path.exists(MODEL_PATH):
+        print("Downloading model from Google Drive...")
+        response = requests.get(MODEL_URL, stream=True)
+        if response.status_code == 200:
+            with open(MODEL_PATH, 'wb') as f:
+                for chunk in response.iter_content(1024):
+                    if chunk:
+                        f.write(chunk)
+            print("Model downloaded successfully.")
+        else:
+            raise Exception(f"Failed to download model: {response.status_code}")
+
+# WAJIB: download dulu sebelum load
+download_model()
+
+# Load the CNN model once when the app starts
+model = load_model(MODEL_PATH, compile=False)
+
 class_labels = [
     'Psoriasis Gutteta',
     'Psoriasis Inversus ',
@@ -39,16 +60,13 @@ def predict():
     if file.filename == '':
         return jsonify({'error': 'No selected file'}), 400
     try:
-        # Read image file
         img_bytes = file.read()
         img = Image.open(io.BytesIO(img_bytes)).convert('RGB')
-        # Preprocess the image to the model's expected input size
-        img = img.resize((299, 299))  # Updated to 299x299 as per user input
+        img = img.resize((299, 299))
         img_array = img_to_array(img)
         img_array = np.expand_dims(img_array, axis=0)
-        img_array = img_array / 255.0  # Normalize to [0,1]
+        img_array = img_array / 255.0
 
-        # Predict
         predictions = model.predict(img_array)
         confidence = float(np.max(predictions))
         predicted_index = int(np.argmax(predictions))
