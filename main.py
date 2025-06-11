@@ -7,25 +7,35 @@ import numpy as np
 import io
 import os
 import requests
+import time
 
 app = Flask(__name__)
 
 # Cek dan download model jika belum ada
 MODEL_PATH = 'psoriasis_model.h5'
-MODEL_URL = 'https://drive.google.com/uc?export=download&id=1ToVYnRTAjOgV9mZG1E_x6VHD7rnpDULL'
+MODEL_URL = os.environ.get('MODEL_URL', 'https://drive.google.com/uc?export=download&id=1ToVYnRTAjOgV9mZG1E_x6VHD7rnpDULL')
 
-def download_model():
+def download_model(retries=3, delay=5):
     if not os.path.exists(MODEL_PATH):
         print("Downloading model from Google Drive...")
-        response = requests.get(MODEL_URL, stream=True)
-        if response.status_code == 200:
-            with open(MODEL_PATH, 'wb') as f:
-                for chunk in response.iter_content(1024):
-                    if chunk:
-                        f.write(chunk)
-            print("Model downloaded successfully.")
-        else:
-            raise Exception(f"Failed to download model: {response.status_code}")
+        for attempt in range(retries):
+            try:
+                response = requests.get(MODEL_URL, stream=True)
+                if response.status_code == 200:
+                    with open(MODEL_PATH, 'wb') as f:
+                        for chunk in response.iter_content(1024):
+                            if chunk:
+                                f.write(chunk)
+                    print("Model downloaded successfully.")
+                    return
+                else:
+                    print(f"Failed to download model: {response.status_code}")
+            except Exception as e:
+                print(f"Error downloading model: {e}")
+            if attempt < retries - 1:
+                print(f"Retrying in {delay} seconds...")
+                time.sleep(delay)
+        raise Exception("Failed to download model after multiple attempts.")
 
 # WAJIB: download dulu sebelum load
 download_model()
