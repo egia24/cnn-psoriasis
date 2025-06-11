@@ -1,0 +1,14 @@
+/* Custom styles to move type psoriasis and accuracy below image and center them */
+.flex-col.md\\:flex-row.justify-center.gap-20 {
+  flex-direction: column !important;
+  align-items: center;
+}
+
+.flex-col.md\\:flex-row.justify-center.gap-20 > div.flex.flex-col.items-center:nth-child(2) {
+  margin-top: 1rem;
+}
+
+.flex-col.md\\:flex-row.justify-center.gap-20 > div.flex.flex-col.items-center:nth-child(2) > .flex.space-x-4.mb-3 {
+  justify-content: center;
+  gap: 1rem;
+}

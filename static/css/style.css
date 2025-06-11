@@ -1,0 +1,17 @@
+/* Custom scrollbar for sidebar */
+::-webkit-scrollbar {
+  width: 6px;
+}
+::-webkit-scrollbar-thumb {
+  background-color: #1f2937;
+  border-radius: 3px;
+}
+/* Selected link style */
+a.selected {
+  background-color: white;
+  color: black;
+  border-radius: 0.375rem; /* rounded-md */
+}
+a.selected i {
+  color: black !important;
+}
