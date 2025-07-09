@@ -1,0 +1,7 @@
+/* Sidebar menu link active/pressed style */
+#sidebar ul li a:active,
+#sidebar ul li a:focus {
+  background-color: white !important;
+  color: black !important;
+  outline: none;
+}

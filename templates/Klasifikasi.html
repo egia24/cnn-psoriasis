@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Psoriasis Classification - Klasifikasi Gambar</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<link
+  rel="stylesheet"
+  href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"
+/>
+<link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}" />
+<link rel="stylesheet" href="{{ url_for('static', filename='css/style_custom.css') }}" />
+<link rel="stylesheet" href="{{ url_for('static', filename='css/style_active.css') }}" />
+</head>
+<body class="bg-gray-300 font-sans min-h-screen">
+<div class="flex min-h-screen">
+  <!-- Sidebar -->
+  <nav id="sidebar" class="bg-black text-white w-44 flex flex-col transition-all duration-300 ease-in-out relative z-20">
+    <div class="flex items-center justify-between px-4 py-3 border-b border-gray-700">
+      <a href="#" class="text-sm font-semibold">PSORIASIS</a>
+    </div>
+    <ul class="flex flex-col mt-4 space-y-3 px-4">
+      <li>
+        <a href="{{ url_for('klasifikasi') }}" id="klasifikasiLink" class="flex items-center text-xs hover:text-indigo-400 transition-colors rounded-md px-2 py-1 selected">
+          <i class="fas fa-image mr-2"></i>
+          Klasifikasi gambar
+        </a>
+      </li>
+      <li>
+<a href="{{ url_for('information') }}" id="informationLink" class="flex items-center text-xs hover:text-indigo-400 transition-colors rounded-md px-2 py-1">
+  <i class="fas fa-info-circle mr-2"></i>
+  Informasi
+</a>
+      </li>
+    </ul>
+  </nav>
+
+  <!-- Main content -->
+  <main id="mainContent" class="flex-1 p-6 pl-4 transition-all duration-300 ease-in-out max-w-screen-lg mx-auto">
+    <!-- Klasifikasi Gambar Section -->
+    <section id="klasifikasiSection" class="bg-gray-700 p-4 mb-10 rounded-md max-w-screen-lg mx-auto">
+<h2 class="text-xs font-semibold text-gray-400 mb-2 uppercase text-center">Input Image</h2>
+      <div class="flex items-center justify-center space-x-4">
+        <button id="uploadBtn" class="flex items-center bg-black text-sm text-white px-5 py-2 rounded-lg shadow-lg hover:bg-gray-900 transition duration-300 ease-in-out focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2">
+          <i class="fas fa-upload mr-2"></i> Upload
+        </button>
+        <input
+          type="file"
+          id="fileInput"
+          accept="image/*"
+          class="bg-gray-300 text-xs text-black px-4 py-1 rounded-md cursor-pointer hidden"
+        />
+      </div>
+      <div id="previewContainer" class="mt-4 relative">
+        <div id="loadingSpinner" class="hidden fixed inset-0 flex items-center justify-center bg-black bg-opacity-40 z-50">
+          <div class="flex flex-col items-center space-y-3">
+            <div class="w-12 h-12 border-4 border-dashed rounded-full animate-spin border-white border-t-transparent"></div>
+            <span class="text-white text-sm font-medium">Memproses gambar...</span>
+          </div>
+        </div>        
+    </section>
+
+    <section class="max-w-4xl mx-auto">
+      <h3 class="text-center font-semibold text-sm mb-8 uppercase">Hasil Klasifikasi</h3>
+      <div class="flex flex-col md:flex-row justify-center gap-20">
+        <div class="flex flex-col items-center">
+          <span class="text-xs font-semibold mb-3 uppercase">Image</span>
+<div id="imageBox" class="w-40 h-40 rounded-md overflow-hidden flex items-center justify-center">
+            <img id="previewImage" src="" alt="Preview of uploaded image" class="max-w-full max-h-full hidden" />
+            <span id="noImageText" class="text-gray-400 text-xs">No image selected</span>
+          </div>
+        </div>
+
+        <div class="flex flex-col items-center">
+          <div class="flex space-x-4 mb-3">
+            <div class="bg-black text-white text-xs px-4 py-1 rounded-md">Type psoriasis</div>
+            <div class="bg-black text-white text-xs px-4 py-1 rounded-md">Accuracy</div>
+          </div>
+          <div class="bg-gray-700 w-40 h-40 rounded-md shadow-md text-center text-white text-xs pt-2 font-semibold hidden">
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+</div>
+
+<script>
+  const sidebar = document.getElementById('sidebar');
+  const menuBtn = document.getElementById('menuBtn');
+  const mainContent = document.getElementById('mainContent');
+  const klasifikasiLink = document.getElementById('klasifikasiLink');
+  const fileInput = document.getElementById('fileInput');
+  const previewImage = document.getElementById('previewImage');
+  const noImageText = document.getElementById('noImageText');
+  const uploadBtn = document.getElementById('uploadBtn');
+
+  let sidebarCollapsed = false;
+
+  if (menuBtn) {
+    menuBtn.addEventListener('click', () => {
+      sidebarCollapsed = !sidebarCollapsed;
+      if (sidebarCollapsed) {
+        sidebar.style.width = '3.5rem';
+        sidebar.querySelectorAll('a').forEach(a => {
+          a.style.overflow = 'hidden';
+          a.style.whiteSpace = 'nowrap';
+          a.style.textIndent = '100%';
+          a.style.width = '1.5rem';
+          a.style.display = 'inline-block';
+        });
+        sidebar.querySelectorAll('li a').forEach(a => {
+          a.style.position = 'relative';
+        });
+        const psoriasisLabel = sidebar.querySelector('a.text-sm.font-semibold');
+        psoriasisLabel.style.textIndent = '100%';
+        psoriasisLabel.style.overflow = 'hidden';
+        psoriasisLabel.style.whiteSpace = 'nowrap';
+        psoriasisLabel.style.display = 'inline-block';
+        mainContent.style.marginLeft = '3.5rem';
+      } else {
+        sidebar.style.width = '11rem';
+        sidebar.querySelectorAll('a').forEach(a => {
+          a.style.textIndent = '';
+          a.style.overflow = '';
+          a.style.whiteSpace = '';
+          a.style.width = '';
+          a.style.display = '';
+          a.style.position = '';
+        });
+        const psoriasisLabel = sidebar.querySelector('a.text-sm.font-semibold');
+        psoriasisLabel.style.textIndent = '';
+        psoriasisLabel.style.overflow = '';
+        psoriasisLabel.style.whiteSpace = '';
+        psoriasisLabel.style.display = '';
+        mainContent.style.marginLeft = '';
+      }
+    });
+  }
+
+  function handleResize() {
+    if (window.innerWidth >= 768) {
+      sidebar.style.width = '11rem';
+      mainContent.style.marginLeft = '';
+      sidebarCollapsed = false;
+      sidebar.querySelectorAll('a').forEach(a => {
+        a.style.textIndent = '';
+        a.style.overflow = '';
+        a.style.whiteSpace = '';
+        a.style.width = '';
+        a.style.display = '';
+        a.style.position = '';
+      });
+      const psoriasisLabel = sidebar.querySelector('a.text-sm.font-semibold');
+      psoriasisLabel.style.textIndent = '';
+      psoriasisLabel.style.overflow = '';
+      psoriasisLabel.style.whiteSpace = '';
+      psoriasisLabel.style.display = '';
+    }
+  }
+
+  window.addEventListener('resize', handleResize);
+  window.addEventListener('load', handleResize);
+
+  fileInput.addEventListener('change', (e) => {
+    const file = e.target.files[0];
+    if (file && file.type.startsWith('image/')) {
+      const reader = new FileReader();
+      reader.onload = function(event) {
+        previewImage.src = event.target.result;
+        previewImage.classList.remove('hidden');
+        noImageText.classList.add('hidden');
+      };
+      reader.readAsDataURL(file);
+
+      const loadingSpinner = document.getElementById('loadingSpinner');
+      loadingSpinner.classList.remove('hidden');
+
+      const formData = new FormData();
+      formData.append('file', file);
+
+      fetch('/predict', {
+        method: 'POST',
+        body: formData
+      })
+      .then(response => response.json())
+          .then(data => {
+            loadingSpinner.classList.add('hidden');
+
+            const predictionBox = document.querySelector('.bg-gray-700.w-40.h-40.rounded-md.shadow-md.text-center.text-white.text-sm.pt-2.uppercase.font-semibold');
+            const typeBox = document.querySelectorAll('.bg-black.text-white.text-xs.px-4.py-1.rounded-md')[0];
+            const accuracyBox = document.querySelectorAll('.bg-black.text-white.text-xs.px-4.py-1.rounded-md')[1];
+            const aboutBox = predictionBox;
+            const aboutTexts = {
+              'Psoriasis Plak': `1. Psoriasis Plak (Plaque Psoriasis)
+Psoriasis plak adalah jenis yang paling umum dijumpai. Kondisi ini ditandai dengan munculnya bercak-bercak kulit berwarna merah yang menonjol dan tertutup oleh sisik keperakan. Bercak ini umumnya muncul di area siku, lutut, kulit kepala, dan punggung bagian bawah. Psoriasis plak dapat menyebabkan rasa gatal, nyeri, dan terkadang kulit pecah-pecah hingga berdarah.`,
+              'Psoriasis Gutata': `2. Psoriasis Gutata
+Psoriasis gutata lebih sering terjadi pada anak-anak dan remaja. Gejalanya berupa bintik-bintik kecil berwarna merah yang menyebar di tubuh, terutama di lengan, kaki, dan batang tubuh. Jenis ini sering muncul setelah infeksi, terutama infeksi tenggorokan seperti radang akibat streptokokus. Psoriasis gutata bisa menghilang sendiri atau berkembang menjadi psoriasis plak.`,
+              'Psoriasis Pustular': `3. Psoriasis Pustular
+Psoriasis pustular adalah jenis psoriasis yang ditandai dengan munculnya lepuhan berisi nanah putih (pustula) yang dikelilingi oleh kulit merah meradang. Meskipun berisi nanah, lepuhan ini bukan infeksi dan tidak menular. Psoriasis pustular dapat terjadi di area lokal, seperti telapak tangan dan kaki, atau menyebar ke seluruh tubuh.`,
+              'Psoriasis Inversa': `4. Psoriasis Inversa (Inverse Psoriasis)
+Psoriasis inversa muncul di lipatan tubuh seperti ketiak, selangkangan, bawah payudara, dan sekitar alat kelamin. Berbeda dengan psoriasis plak, jenis ini tidak memiliki sisik, melainkan berupa kulit merah, halus, dan mengilap. Psoriasis inversa seringkali terasa nyeri dan mudah iritasi karena gesekan atau keringat.`,
+              'Psoriasis Eritrodermik': `5. Psoriasis Eritrodermik
+Psoriasis eritrodermik merupakan bentuk paling langka dan paling parah dari psoriasis. Kondisi ini menyebabkan peradangan yang luas di hampir seluruh permukaan kulit, membuat kulit tampak merah terang, terasa panas, gatal, dan mengelupas secara ekstrem. Jenis ini dapat mengganggu kestabilan suhu tubuh dan keseimbangan cairan, sehingga memerlukan penanganan medis segera.`,
+              'eritrodermik': `5. Psoriasis Eritrodermik
+Psoriasis eritrodermik merupakan bentuk paling langka dan paling parah dari psoriasis. Kondisi ini menyebabkan peradangan yang luas di hampir seluruh permukaan kulit, membuat kulit tampak merah terang, terasa panas, gatal, dan mengelupas secara ekstrem. Jenis ini dapat mengganggu kestabilan suhu tubuh dan keseimbangan cairan, sehingga memerlukan penanganan medis segera.`
+            };
+            if (data.error) {
+              typeBox.textContent = 'Error';
+              accuracyBox.textContent = '';
+              aboutBox.textContent = 'Error: ' + data.error;
+            } else {
+              typeBox.textContent = data.predicted_label;
+              accuracyBox.textContent = (data.confidence * 100).toFixed(2) + '%';
+              const normalizedLabel = data.predicted_label.trim().toLowerCase();
+              console.log('Predicted label:', data.predicted_label, 'Normalized:', normalizedLabel);
+              aboutBox.innerHTML = (aboutTexts[normalizedLabel] || aboutTexts[data.predicted_label] || '').replace(/\n/g, '<br>');
+            }
+          })
+      .catch(error => {
+        loadingSpinner.classList.add('hidden');
+
+        const predictionBox = document.querySelector('.bg-gray-700.w-40.h-40.rounded-md.shadow-md.text-center.text-white.text-sm.pt-2.uppercase.font-semibold');
+        predictionBox.textContent = 'Error: ' + error.message;
+      });
+
+    } else {
+      previewImage.src = '';
+      previewImage.classList.add('hidden');
+      noImageText.classList.remove('hidden');
+    }
+  });
+
+  uploadBtn.addEventListener('click', () => {
+    fileInput.click();
+  });
+</script>
+</body>
+</html>

@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Psoriasis Classification - Information</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<link
+  rel="stylesheet"
+  href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"
+/>
+<link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}" />
+<link rel="stylesheet" href="{{ url_for('static', filename='css/style_custom.css') }}" />
+<link rel="stylesheet" href="{{ url_for('static', filename='css/style_active.css') }}" />
+</head>
+<body class="bg-gray-300 font-sans min-h-screen">
+<div class="flex min-h-screen">
+  <nav id="sidebar" class="bg-black text-white w-44 flex flex-col transition-all duration-300 ease-in-out relative z-20">
+    <div class="flex items-center justify-between px-4 py-3 border-b border-gray-700">
+      <a href="#" class="text-sm font-semibold">PSORIASIS</a>
+</button> 
+    </div>
+    <ul class="flex flex-col mt-4 space-y-3 px-4">
+      <li>
+        <a href="{{ url_for('klasifikasi') }}" id="klasifikasiLink" class="flex items-center text-xs hover:text-indigo-400 transition-colors rounded-md px-2 py-1">
+          <i class="fas fa-image mr-2"></i>
+          Klasifikasi gambar
+        </a>
+      </li>
+      <li>
+        <a href="{{ url_for('information') }}" id="informationLink" class="flex items-center text-xs hover:text-indigo-400 transition-colors rounded-md px-2 py-1 selected">
+          <i class="fas fa-info-circle mr-2"></i>
+          Informasi
+        </a>
+      </li>
+    </ul>
+  </nav>
+
+  <main id="mainContent" class="flex-1 p-6 transition-all duration-300 ease-in-out">
+    <section id="informationSection" class="max-w-4xl mx-auto p-4 bg-gray-700 rounded-md text-white">
+      <h2 class="text-center font-semibold text-sm mb-4 uppercase">Informasi</h2>
+<p class="text-xs leading-relaxed mb-4">
+  Psoriasis adalah penyakit kulit kronis yang ditandai dengan pertumbuhan sel kulit baru yang terlalu cepat. Akibatnya, sel kulit baru akan terus menumpuk di permukaan hingga membentuk bercak tebal yang berwarna merah dan bersisik.
+  Psoriasis termasuk penyakit autoimun yang tidak diketahui pasti penyebabnya. Selain karena masalah sistem kekebalan tubuh, psoriasis biasanya muncul dipicu oleh berbagai faktor baik dari dalam diri maupun lingkungan. Walau tidak ada obat untuk menyembuhkan psoriasis, penyakit ini dapat kambuh kembali di kemudian hari. Anda pun tak perlu khawatir karena sudah tersedia banyak obat dan penanganan untuk mengobati gejalanya.
+  Psoriasis juga bukan termasuk penyakit kulit menular sebab psoriasis tidak disebabkan oleh infeksi virus atau bakteri.  Walau melakukan kontak kulit atau meminjam barang-barang pribadi milik pasien, Anda tetap tidak akan tertular penyakit ini.
+</p>
+<h3 class="text-xs font-semibold mb-2">1. Psoriasis Vulgaris</h3>
+<p class="text-xs leading-relaxed">
+        Psoriasis vulgaris yang bentuk tersering (90% pasien) bentuk psoriasis yang paling umum, ditandai oleh plak merah tebal dengan sisik perak yang biasanya muncul di area kulit seperti siku, lutut, dan kulit kepala. Penyakit ini terjadi akibat aktivasi berlebihan sistem imun. Sistem kekebalan tubuh berisi sel darah putih yang disebut limfosit T (sel T) untuk mendeteksi dan melawan zat asing seperti virus atau bakteri. Sayangnya akibat terjadi kesalahan, sel T justru menyerang sel-sel sehat seolah sedang melawan luka atau infeksi kemudian faktor genetik dan lingkungan seperti stres, infeksi, dan trauma kulit juga berperan dalam memicu penyakit ini.
+      </p>
+<div class="mt-4 flex justify-center">
+<img src="{{ url_for('static', filename='images/vulgaris.png') }}" alt="Psoriasis Vulgaris" class="max-w-full h-auto rounded-md shadow-md" />
+      </div>
+      <ul class="list-disc list-inside text-xs mt-2 space-y-1">
+        <p>Gejala : </p>
+        <li>Bercak merah pada kulit dengan sisik tebal berwarna perak.</li>
+        <li>Lapisan kering, tipis, dan berwarna putih keperakan yang menutupi plak.</li>
+        <li>Paling sering muncul di kulit kepala, siku, lutut, dan punggung bawah.</li>
+        <li>Kulit kering dan pecah-pecah hingga berdarah.</li>
+        <li>Rasa gatal dan terbakar pada area yang terkena.</li>
+      </ul>
+<h3 class="text-xs font-semibold mt-6 mb-2">2. Psoriasis Guttate</h3>
+<p class="text-xs leading-relaxed">
+  Psoriasis guttate yang biasanya muncul secara tiba-tiba dengan bintik-bintik kecil berukuran beberapa milimeter yang tersebar di tubuh, terutama setelah infeksi saluran pernapasan atas, terutama infeksi streptokokus. Bentuk ini lebih sering menyerang anak-anak dan dewasa muda, dan mekanisme penyebabnya mirip psoriasis vulgaris dengan aktivasi imun yang memicu proliferasi keratinosit.
+</p>
+<div class="mt-4 flex justify-center">
+  <img src="{{ url_for('static', filename='images/Guttate.png') }}" alt="Psoriasis Guttate" class="max-w-full h-auto rounded-md shadow-md" />
+</div>
+<ul class="list-disc list-inside text-xs mt-2 space-y-1">
+  <p>Gejala : </p>
+  <li>Bintik-bintik merah yang memusat pada spot-spot tertentu, biasanya menyebar secara luas.</li>
+  <li>Paling sering muncul pada bagian depan tubuh mulai dari dada, lengan, dan kaki.</li>
+  <li>Bintik psoriasis bisa menyebar lebih luas pada bagian wajah, telinga, dan kulit kepala.</li>
+  <li>Gejala hampir tidak pernah muncul pada bagian kuku, telapak tangan, dan kaki.</li>
+</ul>
+<h3 class="text-xs font-semibold mt-6 mb-2">3. Psoriasis Pustular</h3>
+<p class="text-xs leading-relaxed">
+  Psoriasis pustular merupakan bentuk psoriasis yang ditandai dengan kemunculan pustula berisi nanah di atas kulit merah meradang. Bentuk ini terjadi karena infiltrasi neutrofil yang sangat kuat sebagai respons inflamasi, menyebabkan pembentukan pustula. Psoriasis pustular bisa bersifat lokal maupun menyebar luas dan sering dipicu oleh penghentian steroid secara tiba-tiba atau infeksi, serta melibatkan gangguan imun yang lebih parah dibandingkan bentuk psoriasis lain.
+</p>
+<div class="mt-4 flex justify-center">
+  <img src="{{ url_for('static', filename='images/Pustular.png') }}" alt="Psoriasis Pustular" class="max-w-full h-auto rounded-md shadow-md" />
+</div>
+<ul class="list-disc list-inside text-xs mt-2 space-y-1">
+  <p>Gejala : </p>
+  <li>Biasanya dikelilingi kulit merah yang meradang.</li>
+  <li>Kulit di sekitar pustula tampak merah terang, hangat, dan bengkak.</li>
+  <li>Setelah pustula mengering, kulit bisa mengelupas dan tampak bersisik.</li>
+  <li>Area yang terdampak bisa terasa nyeri, gatal, atau panas seperti terbakar.</li>
+</ul>
+<h3 class="text-xs font-semibold mt-6 mb-2">4. Psoriasis Inversus</h3>
+<p class="text-xs leading-relaxed">
+  Psoriasis ini muncul di daerah lipatan kulit seperti ketiak, selangkangan, dan bawah payudara. Lesinya cenderung merah, halus, dan kurang bersisik karena kondisi lembap dan panas di area lipatan tersebut yang memengaruhi tampilan klinis. Mekanisme penyakit ini juga melibatkan aktivasi sistem imun, tetapi faktor kelembapan dan gesekan memengaruhi manifestasi kulit.
+</p>
+<div class="mt-4 flex justify-center">
+  <img src="{{ url_for('static', filename='images/Inversus.png') }}" alt="Psoriasis Inversus" class="max-w-full h-auto rounded-md shadow-md" />
+</div>
+<ul class="list-disc list-inside text-xs mt-2 space-y-1">
+  <p>Gejala : </p>
+  <li>Bercak merah yang terlihat halus di kulit.</li>
+  <li>Peradangan pada kulit yang akan memburuk saat bergesekan dan berkeringat.</li>
+  <li>Munculnya lapisan putih keperakan yang sangat tipis.</li>
+  <li>Kulit terasa sakit.</li>
+</ul>
+</section>
+  </main>
+</div>
+</body>
+</html>
